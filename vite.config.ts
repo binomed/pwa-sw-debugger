@@ -9,7 +9,7 @@ export default defineConfig({
             entry: [
                 resolve(__dirname, 'scripts/index.ts'),
                 //resolve(__dirname, 'scripts/devtools.ts'),
-                //resolve(__dirname, 'scripts/background/background.ts'),
+                resolve(__dirname, 'scripts/background/background.ts'),
                 resolve(__dirname, 'scripts/panel/devtools-panel.ts'),
             ]
         },

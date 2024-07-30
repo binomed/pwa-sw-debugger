@@ -4,9 +4,9 @@
     "description": "PWA Debug Tooling",
     "main": "index.js",
     "scripts": {
-        "start": "npm run prepare-build && npm run vite-build && npm run serve-watch",
+        "start": "npm run prepare-build && npm run vite-build && npm run post-build && npm run serve-watch",
         "serve-watch": "parallelshell \"npm run serve\" \"npm run build-watch\" ",
-        "serve": "live-server --host=localhost --port=8080 --open=\"./dist/index.html\" --watch=\"./dist/scripts/\"",
+        "serve": "live-server --host=localhost --port=8080 --open=\"./dist/panel/panel.html\" --watch=\"./dist/\"",
         "prepare-build": "node ./build-scripts/prepare-build.js",
         "build": "npm run prepare-build && npm run vite-build && npm run post-build",
         "vite-build": "vite build",

@@ -24,7 +24,8 @@ browserObject.devtools.panels.create(
     "Test Panel",
     "/assets/Logo-Sw-Debugger.png",
     "/panel/panel.html"
-).then((newPanel) => {
+)
+/*.then((newPanel) => {
     newPanel.onShown.addListener(handleShown);
     newPanel.onHidden.addListener(handleHidden);
-}); 
+}); */
