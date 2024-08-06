@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "strict": false,
+      "noImplicitAny": false,
+      "noImplicitThis": false,     
+      "experimentalDecorators": true,
+      "strictNullChecks": false, // Désactive la vérification stricte des valeurs `null` et `undefined`
+      "strictFunctionTypes": false, // Désactive la vérification stricte des types de fonction
+      "strictBindCallApply": false, // Désactive la vérification stricte des fonctions `bind`, `call` et `apply`
+      "strictPropertyInitialization": false, // Désactive la vérification stricte de l'initialisation des propriétés de classe
+      "noImplicitReturns": false, // Permet les fonctions sans instruction `return`
+      "noFallthroughCasesInSwitch": false,
+      "allowJs": true,
+      "checkJs": true,
+      "allowUnreachableCode":false
+    },
+    "include": ["scripts/**/*.ts"],
+  }

@@ -32,6 +32,8 @@
     },
     "homepage": "https://github.com/GDG-Nantes/CountDownDevFest2023#readme",
     "devDependencies": {
+        "@types/chrome": "^0.0.269",
+        "@types/firefox-webext-browser": "^120.0.4",
         "@types/node": "^18.15.11",
         "chokidar-cli": "^3.0.0",
         "firebase-tools": "^11.30.0",
@@ -39,7 +41,8 @@
         "parallelshell": "3.0.1",
         "sass": "^1.60.0",
         "shelljs": "^0.8.5",
-        "typescript": "^4.9.3",
+        "ts-loader": "^9.4.2",
+        "typescript": "^4.9.5",
         "vite": "^4.2.1"
     },
     "dependencies": {

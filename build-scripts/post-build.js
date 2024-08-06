@@ -17,6 +17,10 @@ function moveBuild() {
             name:'background',
             dest:'dist/background'
         }*/
+            /*{
+                name:'getCurrentSW',
+                dest:'dist/inject'
+            }*/
     ];
     files.forEach(file => {
         console.log(file);
@@ -30,6 +34,6 @@ function moveBuild() {
 
     shelljs.cp('-f', './scripts/background/background.js','./dist/background');
     shelljs.cp('-f', './scripts/content/content.js','./dist/content');
-    shelljs.cp('-f', './scripts/inject/inject.js','./dist/inject');
-    shelljs.cp('-f', './scripts/devtools.js','./dist');
+    //shelljs.cp('-f', './scripts/inject/inject.js','./dist/inject');
+    //shelljs.cp('-f', './scripts/devtools.js','./dist');
 }

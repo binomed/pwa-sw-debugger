@@ -1,8 +1,6 @@
-if (typeof window != "undefined") {
-    window.browserObject = window.browser !== undefined ? browser : chrome;
-} else {
-    browserObject = chrome;
-}
+import { getBrowserObject } from "./helper/helper";
+
+let browserObject = getBrowserObject();
 
 /**
 This script is run whenever the devtools are open.
@@ -25,7 +23,3 @@ browserObject.devtools.panels.create(
     "/assets/Logo-Sw-Debugger.png",
     "/panel/panel.html"
 )
-/*.then((newPanel) => {
-    newPanel.onShown.addListener(handleShown);
-    newPanel.onHidden.addListener(handleHidden);
-}); */

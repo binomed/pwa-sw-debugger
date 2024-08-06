@@ -8,9 +8,14 @@
       "48": "assets/Logo-Sw-Debugger.png"
     },
     "background": {
-      "service_worker": "background.js"
+      "service_worker": "background.mjs",
+      "type": "module"
     },
-    "permissions": ["scripting"],
+    "permissions": [
+      "scripting",
+      "tabs",
+      "activeTab"
+    ],
     "host_permissions": [
       "<all_urls>"
     ],
@@ -19,5 +24,17 @@
         "matches": ["<all_urls>"],
         "js": ["content/content.js"]
       }
-    ]
+    ],
+    "web_accessible_resources": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "resources": [
+        "**/*",
+        "*"
+      ],
+      "use_dynamic_url": true
+    }
+  ]
   }

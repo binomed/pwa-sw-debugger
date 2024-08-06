@@ -5,7 +5,7 @@ export function getCurrentRegistration(): Promise<ServiceWorkerRegistration | un
     return navigator.serviceWorker.getRegistration();
 };
 
-getCurrentRegistration().then(registration => console.log('Registration : ', registration));
+//getCurrentRegistration().then(registration => console.log('Registration : ', registration));
 
 // Unregister the current registration and clean caches
 export function cancelCurrentRegistration(): void {
@@ -77,7 +77,7 @@ export function forceUpdate(): Promise<void> {
 
 }
 
-
+/*
 
 // List of Caches
 caches.keys().then(cacheEntries => console.log(`List of all caches : [${cacheEntries.join(',')}]`));
@@ -137,3 +137,4 @@ caches.keys().then(async (cacheEntries) => {
         console.log(`Data for cache '${cacheKey} removed : ${cacheDelete}'`);
     }
 });
+*/

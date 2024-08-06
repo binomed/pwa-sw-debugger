@@ -1,9 +1,6 @@
-let browserObject = undefined;
-if (typeof window != 'undefined') {
-    window.browserObject = window.browser !== undefined ? browser : chrome;
-} else {
-    browserObject = chrome;
-}
+import { getBrowserObject } from "../helper/helper";
+import { getCurrentSWRegistration } from "../inject/getCurrentSW";
+//import { getCurrentRegistration } from "../pwa-console-sw";
 
 /**
 When we receive the message, execute the given script in the given
@@ -11,9 +8,23 @@ tab.
 */
 function handleMessage(request, sender, sendResponse) {
 
-    console.log(sender.tab ?
-        "from a content script:" + sender.tab.url :
-        "from the extension", request);
+    const browserObject = getBrowserObject()
+    if (request && request.source && request.source === 'pwa-sw-debbugger-ext') {
+        console.log(sender.tab ?
+            "in background, from a content script:" + sender.tab.url :
+            "in background, from the extension", request);
+        browserObject.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            browserObject.tabs.sendMessage(tabs[0].id, request,
+                (response) => {
+                    console.log('Réponse du content script :', response);
+                });
+        });
+        sendResponse({
+            source: 'pwa-sw-debbugger-ext',
+            action: 'message-sent-from-back-to-content',
+        })
+    }
+
 
     if (sender.url != browserObject.runtime.getURL("/panel/panel.html")) {
         return;
@@ -22,7 +33,7 @@ function handleMessage(request, sender, sendResponse) {
     if (request.click === "test") {
         //console.log('Will send data to content.js');
         //sendResponse({farewell: "goodbye"});
-        console.log('ask for execution of inject.js');
+        /*console.log('ask for execution of inject.js');
         browserObject.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             browserObject.scripting.executeScript({
                 target: {
@@ -30,51 +41,30 @@ function handleMessage(request, sender, sendResponse) {
                 },
                 files: ['./inject/inject.js']
             });
-        });
-    } else if (request.click === "test bis") {
-        //console.log('Will send data to content.js');
-        //sendResponse({farewell: "goodbye"});
-        console.log('ask for execution of write inject script', browserObject);
-        browserObject.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        });*/
+        /*browserObject.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             browserObject.scripting.executeScript({
                 target: {
                     tabId: tabs[0].id
                 },
-                func: function () {
-                    console.log('Executing inject function for registration');
-                    /*document.querySelectorAll('img').forEach(function(img){
-                        img.style.display = 'none';
-                    });*/
-                    navigator.serviceWorker.getRegistration().then(function (registration) {
-                        console.log('registration', registration, JSON.stringify(registration));
-                        let browserObject2 = window.browser !== undefined ? browser : chrome;
-                        let regManual = {};
-                        if (registration) {
-                            if (registration.installing) {
-                                regManual.installing = registration.installing;
-                            }
-                            if (registration.waiting) {
-                                regManual.waiting = registration.waiting;
-                            }
-                            if (registration.active) {
-                                regManual.active = {
-                                    scriptURL: registration.active.scriptURL,
-                                    state: registration.active.state
-                                };
-                            }
-                            if (registration.scope) {
-                                regManual.scope = registration.scope;
-                            }
-                        }
+                files: ['./inject/getCurrentSW.mjs']
+            });
+        });*/
 
-                        browserObject2.runtime.sendMessage({
-                            resp: "ok",
-                            regManual
-                        });
-                    });
+    } else if (request.click === "test bis") {
+        //console.log('Will send data to content.js');
+        //sendResponse({farewell: "goodbye"});
+        console.log('ask for execution of write inject script', browserObject);
+        /*browserObject.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            browserObject.scripting.executeScript({
+                target: {
+                    tabId: tabs[0].id
+                },
+                func: () => {
+                    getCurrentSWRegistration();
                 }
             });
-        });
+        });*/
     }
     /*browserObject.tabs.executeScript(
         request.tabId,
@@ -87,7 +77,7 @@ function handleMessage(request, sender, sendResponse) {
 /**
 Listen for messages from our devtools panel.
 */
-browserObject.runtime.onMessage.addListener(handleMessage);
+//getBrowserObject().runtime.onMessage.addListener(handleMessage);
 
 
 /*
