@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { getBrowserObject, ID_CONTENT_SCRIPT, ID_PANEL, logDebug } from '../helper/helper';
+import { sendDataFromPanelToContentScript } from '../helper/message-helper';
 
 let browserObject = getBrowserObject();
 
@@ -38,7 +39,6 @@ export class SWPanel extends LitElement {
     reg: ServiceWorkerRegistration | undefined;
     cacheKeys: string[] | undefined;
     cacheMap: any;
-    tabId: number = 0;
 
     constructor() {
         super();
@@ -66,74 +66,31 @@ export class SWPanel extends LitElement {
         }
     }
 
-    click() {
-        if (browserObject) {
-            console.log('send message');
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                this.tabId = tabs[0].id;
-                browserObject.tabs.sendMessage(tabs[0].id,
-                    {
-                        source: ID_PANEL,
-                        target: ID_CONTENT_SCRIPT,
-                        data: {
-                            action: 'current-sw-registration'
-                        }
-                    },
-                    (response) => {
-                        logDebug('Réponse du content script :', response);
-                    });
-            });
-
-        }
+    clickCurrentSWReg() {
+        sendDataFromPanelToContentScript({
+            action: 'current-sw-registration'
+        });
     }
 
-    clickBis() {
-        if (browserObject) {
-            logDebug('send message bis');
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                this.tabId = tabs[0].id;
-                browserObject.tabs.sendMessage(tabs[0].id,
-                    {
-                        source: ID_PANEL,
-                        target: ID_CONTENT_SCRIPT,
-                        data: {
-                            action: 'cache-keys'
-                        }
-                    },
-                    (response) => {
-                        logDebug('Réponse du content script :', response);
-                    });
-            });
-        }
+    clickCacheKeys() {
+        sendDataFromPanelToContentScript({
+            action: 'cache-keys'
+        });
     }
 
-    clickTer() {
-        if (browserObject) {
-            logDebug('send message ter');
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                this.tabId = tabs[0].id;
-                browserObject.tabs.sendMessage(tabs[0].id,
-                    {
-                        source: ID_PANEL,
-                        target: ID_CONTENT_SCRIPT,
-                        data: {
-                            action: 'cache-data'
-                        }
-                    },
-                    (response) => {
-                        logDebug('Réponse du content script :', response);
-                    });
-            });
-        }
+    clickCacheDatas() {
+        sendDataFromPanelToContentScript({
+            action: 'cache-data'
+        });
     }
 
     render() {
         return html`
         <menu>Here menu item</menu>
         <main>Service worker registration : 
-            <button @click="${() => this.click()}">Get Current Service Worker</button>
-            <button @click="${() => this.clickBis()}">Get Cache Keys</button><br>
-            <button @click="${() => this.clickTer()}">Get Cache Datas</button><br>
+            <button @click="${() => this.clickCurrentSWReg()}">Get Current Service Worker</button>
+            <button @click="${() => this.clickCacheKeys()}">Get Cache Keys</button><br>
+            <button @click="${() => this.clickCacheDatas()}">Get Cache Datas</button><br>
             ${this.reg ? this.reg.active?.scriptURL : 'no registration'}<br>
             <br>
             ${this.cacheKeys && this.cacheKeys.length > 0 ?

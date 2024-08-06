@@ -5,6 +5,9 @@ export interface BrowserObject {
     devtools: {
         panels: {
             create: (name: string, icon: string, html: string) => void
+        },
+        inspectedWindow: {
+            tabId: number,
         }
     }
 }

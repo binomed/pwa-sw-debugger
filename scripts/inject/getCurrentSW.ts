@@ -1,4 +1,5 @@
 import { getBrowserObject, ID_CONTENT_SCRIPT, ID_MAIN_SCRIPT, logDebug } from '../helper/helper';
+import { sendDataFromMainScriptToContentScript } from '../helper/message-helper';
 import { getCurrentRegistration } from '../pwa-console-sw';
 
 export function getCurrentSWRegistration() {
@@ -23,15 +24,9 @@ export function getCurrentSWRegistration() {
             }
         }
 
-        const eventData = {
-            source: ID_MAIN_SCRIPT,
-            target: ID_CONTENT_SCRIPT,
-            data: {
-                type: 'sw-registration',
-                registration: regManual
-            }
-        };
-        logDebug('Send message to content script with window.postMessage', eventData)
-        window.postMessage(eventData, '*');
+        sendDataFromMainScriptToContentScript({
+            type: 'sw-registration',
+            registration: regManual
+        });
     });
 }

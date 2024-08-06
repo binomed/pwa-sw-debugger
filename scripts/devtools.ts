@@ -19,7 +19,7 @@ function handleHidden() {
 Create a panel, and add listeners for panel show/hide events.
 */
 browserObject.devtools.panels.create(
-    "Test Panel",
+    "SW Debug",
     "/assets/Logo-Sw-Debugger.png",
     "/panel/panel.html"
 )

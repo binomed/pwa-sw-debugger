@@ -1,4 +1,5 @@
 import { ID_CONTENT_SCRIPT, ID_MAIN_SCRIPT, logDebug } from "../helper/helper";
+import { sendDataFromMainScriptToContentScript } from "../helper/message-helper";
 
 export function getCacheDatas() {
     caches.keys().then(async (cacheEntries) => {
@@ -14,16 +15,11 @@ export function getCacheDatas() {
                 cacheMap[cacheKey].push(entry.url);
             }
         }
-        const eventData = {
-            source: ID_MAIN_SCRIPT,
-            target: ID_CONTENT_SCRIPT,
-            data: {
-                type: 'cache-data',
-                cacheMap
-            }
-        };
-        logDebug('Send message to content script with window.postMessage', eventData)
-        window.postMessage(eventData, '*');
+        sendDataFromMainScriptToContentScript({
+            type: 'cache-data',
+            cacheMap
+        });
+
     });
 
 }
