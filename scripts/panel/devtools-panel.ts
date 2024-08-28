@@ -1,9 +1,11 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { getBrowserObject, ID_CONTENT_SCRIPT, ID_PANEL, logDebug } from '../helper/helper';
-import { sendDataFromPanelToContentScript } from '../helper/message-helper';
+import { ID_CONTENT_SCRIPT, ID_PANEL, logDebug } from '../helper/helper';
+//import { sendDataFromPanelToContentScript } from '../helper/message-helper';
+import { sendMessage, onMessage } from "webext-bridge/devtools";
+import browser from "webextension-polyfill"
+import { send } from 'process';
 
-let browserObject = getBrowserObject();
 
 
 @customElement('sw-debug-panel')
@@ -42,24 +44,45 @@ export class SWPanel extends LitElement {
 
     constructor() {
         super();
-        browserObject.runtime.onMessage.addListener((request, sender, sendResponse) => this.handleMessage(request, sender, sendResponse));
+        console.log('Hello from panel')
+        onMessage(
+            'sw-registration',
+            (message) => {
+                this.reg = (message.data as any).registration;
+                this.requestUpdate();
+            }
+        );
+        onMessage(
+            'cache-entries',
+            (message) => {
+                this.cacheKeys = (message.data as any).cacheEntries;
+                this.requestUpdate();
+            }
+        );
+        onMessage(
+            'cache-data',
+            (message) => {
+                this.cacheMap = (message.data as any).cacheMap;
+                this.requestUpdate();
+            }
+        );
     }
 
-    handleMessage(request, sender, sendResponse) {
-        console.log("Message recieved by devtools-panel", request);
+    handleMessage(message) {
+        console.log("Message recieved by devtools-panel", message);
 
-        if (request
-            && request.source === ID_CONTENT_SCRIPT
-            && request.target === ID_PANEL) {
-            switch (request.data.type) {
+        if (message
+            && message.source === ID_CONTENT_SCRIPT
+            && message.target === ID_PANEL) {
+            switch (message.data.type) {
                 case 'sw-registration':
-                    this.reg = request.data.registration;
+                    this.reg = message.data.registration;
                     break;
                 case 'cache-entries':
-                    this.cacheKeys = request.data.cacheEntries;
+                    this.cacheKeys = message.data.cacheEntries;
                     break;
                 case 'cache-data':
-                    this.cacheMap = request.data.cacheMap;
+                    this.cacheMap = message.data.cacheMap;
                     break;
             }
             this.requestUpdate();
@@ -67,21 +90,26 @@ export class SWPanel extends LitElement {
     }
 
     clickCurrentSWReg() {
-        sendDataFromPanelToContentScript({
-            action: 'current-sw-registration'
-        });
+        sendMessage(
+            'current-sw-registration',
+            { action: 'current-sw-registration' },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
     }
 
     clickCacheKeys() {
-        sendDataFromPanelToContentScript({
-            action: 'cache-keys'
-        });
+        sendMessage(
+            'cache-keys',
+            { action: 'cache-keys' },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
+
     }
 
     clickCacheDatas() {
-        sendDataFromPanelToContentScript({
-            action: 'cache-data'
-        });
+        sendMessage(
+            'cache-data',
+            { action: 'cache-data' },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
+
     }
 
     render() {

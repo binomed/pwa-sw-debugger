@@ -12,7 +12,8 @@
       "noFallthroughCasesInSwitch": false,
       "allowJs": true,
       "checkJs": true,
-      "allowUnreachableCode":false
+      "allowUnreachableCode":false,
+      "esModuleInterop": true
     },
-    "include": ["scripts/**/*.ts"],
+    "include": ["scripts/**/*.ts", "scripts/background/background.js"],
   }

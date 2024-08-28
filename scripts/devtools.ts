@@ -1,6 +1,5 @@
-import { getBrowserObject } from "./helper/helper";
+import browser from "webextension-polyfill";
 
-let browserObject = getBrowserObject();
 
 /**
 This script is run whenever the devtools are open.
@@ -18,7 +17,7 @@ function handleHidden() {
 /**
 Create a panel, and add listeners for panel show/hide events.
 */
-browserObject.devtools.panels.create(
+browser.devtools.panels.create(
     "SW Debug",
     "/assets/Logo-Sw-Debugger.png",
     "/panel/panel.html"

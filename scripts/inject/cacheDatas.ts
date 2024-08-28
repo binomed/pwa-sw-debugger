@@ -1,5 +1,5 @@
-import { ID_CONTENT_SCRIPT, ID_MAIN_SCRIPT, logDebug } from "../helper/helper";
-import { sendDataFromMainScriptToContentScript } from "../helper/message-helper";
+import { sendMessage } from "webext-bridge/content-script";
+import { logDebug } from "../helper/helper";
 
 export function getCacheDatas() {
     caches.keys().then(async (cacheEntries) => {
@@ -15,10 +15,11 @@ export function getCacheDatas() {
                 cacheMap[cacheKey].push(entry.url);
             }
         }
-        sendDataFromMainScriptToContentScript({
-            type: 'cache-data',
-            cacheMap
-        });
+        sendMessage('cache-data',
+            {
+                type: 'cache-data',
+                cacheMap
+            }, 'devtools');
 
     });
 

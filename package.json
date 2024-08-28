@@ -8,15 +8,17 @@
         "serve-watch": "parallelshell \"npm run serve\" \"npm run build-watch\" ",
         "serve": "live-server --host=localhost --port=8080 --open=\"./dist/panel/panel.html\" --watch=\"./dist/\"",
         "prepare-build": "node ./build-scripts/prepare-build.js",
-        "build": "npm run prepare-build && npm run vite-build && npm run post-build",
-        "vite-build": "vite build",
-        "build-watch": "chokidar \"./scripts\" -c \"npm run vite-build\"",
-        "post-build": "node ./build-scripts/post-build.js",
+        "build": "npm run prepare-build && npm run vite-build",
+        "vite-build": "npm run vite-build-background && npm run vite-build-panel && npm run vite-build-content && npm run vite-build-devtools",
+        "vite-build-devtools": "vite build --config vite.config.devtools.ts",
+        "vite-build-content": "vite build --config vite.config.content.ts",
+        "vite-build-panel": "vite build --config vite.config.panel.ts",
+        "vite-build-background": "vite build --config vite.config.background.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/GDG-Nantes/CountDownDevFest2023.git"
+        "url": "git+https://github.com/binomed/pwa-sw-debugger.git"
     },
     "keywords": [
         "countdown",
@@ -28,9 +30,9 @@
     "author": "jefbinomed",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/GDG-Nantes/CountDownDevFest2023/issues"
+        "url": "https://github.com/binomed/pwa-sw-debugger/issues"
     },
-    "homepage": "https://github.com/GDG-Nantes/CountDownDevFest2023#readme",
+    "homepage": "https://github.com/binomed/pwa-sw-debugger#readme",
     "devDependencies": {
         "@types/chrome": "^0.0.269",
         "@types/firefox-webext-browser": "^120.0.4",
@@ -43,9 +45,12 @@
         "shelljs": "^0.8.5",
         "ts-loader": "^9.4.2",
         "typescript": "^4.9.5",
-        "vite": "^4.2.1"
+        "vite": "^4.2.1",
+        "webext-bridge": "^6.0.1",
+        "webextension-polyfill": "^0.12.0"
     },
     "dependencies": {
+        "@types/webextension-polyfill": "^0.12.0",
         "firebase": "^9.19.1",
         "firebaseui": "^6.0.2",
         "lit": "^2.7.1"

@@ -1,5 +1,5 @@
-import { getBrowserObject, ID_CONTENT_SCRIPT, ID_MAIN_SCRIPT, logDebug } from '../helper/helper';
-import { sendDataFromMainScriptToContentScript } from '../helper/message-helper';
+import { logDebug } from '../helper/helper';
+import { sendMessage } from 'webext-bridge/content-script';
 import { getCurrentRegistration } from '../pwa-console-sw';
 
 export function getCurrentSWRegistration() {
@@ -23,10 +23,10 @@ export function getCurrentSWRegistration() {
                 regManual.scope = registration.scope;
             }
         }
-
-        sendDataFromMainScriptToContentScript({
-            type: 'sw-registration',
-            registration: regManual
-        });
+        sendMessage('sw-registration',
+            {
+                type: 'sw-registration',
+                registration: regManual
+            }, 'devtools');
     });
 }
