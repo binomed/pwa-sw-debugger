@@ -1,5 +1,5 @@
 import { sendMessage } from "webext-bridge/content-script";
-import { logDebug } from "../helper/helper";
+import { ID_PANEL, logDebug } from "../helper/helper";
 
 export function getCacheDatas() {
     caches.keys().then(async (cacheEntries) => {
@@ -15,7 +15,7 @@ export function getCacheDatas() {
                 cacheMap[cacheKey].push(entry.url);
             }
         }
-        sendMessage('cache-data',
+        sendMessage(ID_PANEL,
             {
                 type: 'cache-data',
                 cacheMap

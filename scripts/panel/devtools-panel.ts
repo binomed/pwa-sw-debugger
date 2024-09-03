@@ -22,7 +22,7 @@ export class SWPanel extends LitElement {
             top:0;
             left:0;
             display:grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 200px 1fr;
             grid-template-rows: 1fr;
             grid-gap: 20px;
             grid-template-areas: "menu content";
@@ -44,65 +44,47 @@ export class SWPanel extends LitElement {
 
     constructor() {
         super();
-        console.log('Hello from panel')
         onMessage(
-            'sw-registration',
-            (message) => {
-                this.reg = (message.data as any).registration;
-                this.requestUpdate();
-            }
-        );
-        onMessage(
-            'cache-entries',
-            (message) => {
-                this.cacheKeys = (message.data as any).cacheEntries;
-                this.requestUpdate();
-            }
-        );
-        onMessage(
-            'cache-data',
-            (message) => {
-                this.cacheMap = (message.data as any).cacheMap;
-                this.requestUpdate();
-            }
-        );
+            ID_PANEL,
+            (message) => this.handleMessage(message));
+    }
+
+    firstUpdated() {
+        this.initBaseElements();
+    }
+
+    initBaseElements() {
+        // Ask sw registration 
+        sendMessage(
+            'current-sw-registration',
+            { action: 'current-sw-registration' },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
+
+        // Ask cache keys
+        sendMessage(
+            'cache-keys',
+            { action: 'cache-keys' },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
     }
 
     handleMessage(message) {
         console.log("Message recieved by devtools-panel", message);
 
-        if (message
-            && message.source === ID_CONTENT_SCRIPT
-            && message.target === ID_PANEL) {
-            switch (message.data.type) {
-                case 'sw-registration':
-                    this.reg = message.data.registration;
-                    break;
-                case 'cache-entries':
-                    this.cacheKeys = message.data.cacheEntries;
-                    break;
-                case 'cache-data':
-                    this.cacheMap = message.data.cacheMap;
-                    break;
-            }
-            this.requestUpdate();
+        switch (message.data.type) {
+            case 'sw-registration':
+                console.log('sw-registration', message.data);
+                this.reg = message.data.registration;
+                break;
+            case 'cache-entries':
+                this.cacheKeys = message.data.cacheEntries;
+                break;
+            case 'cache-data':
+                this.cacheMap = message.data.cacheMap;
+                break;
         }
+        this.requestUpdate();
     }
 
-    clickCurrentSWReg() {
-        sendMessage(
-            'current-sw-registration',
-            { action: 'current-sw-registration' },
-            'content-script@' + browser.devtools.inspectedWindow.tabId);
-    }
-
-    clickCacheKeys() {
-        sendMessage(
-            'cache-keys',
-            { action: 'cache-keys' },
-            'content-script@' + browser.devtools.inspectedWindow.tabId);
-
-    }
 
     clickCacheDatas() {
         sendMessage(
@@ -114,14 +96,38 @@ export class SWPanel extends LitElement {
 
     render() {
         return html`
-        <menu>Here menu item</menu>
-        <main>Service worker registration : 
-            <button @click="${() => this.clickCurrentSWReg()}">Get Current Service Worker</button>
-            <button @click="${() => this.clickCacheKeys()}">Get Cache Keys</button><br>
-            <button @click="${() => this.clickCacheDatas()}">Get Cache Datas</button><br>
-            ${this.reg ? this.reg.active?.scriptURL : 'no registration'}<br>
-            <br>
-            ${this.cacheKeys && this.cacheKeys.length > 0 ?
+        <menu>
+            <h3>PWA ServiceWorker Debugger</h3>
+            <ul>
+                <li>Service worker</li>
+                <li>Cache</li>
+                <li>Manifest</li>
+            </ul>
+        </menu> 
+        <main>
+            ${this.render_SW()}
+            <hr>
+            ${this.render_caches()}
+            <hr>
+            ${this.render_manifest()}
+            
+        </main>
+        `
+    }
+
+
+    render_SW() {
+        return html`
+        <h1>Service worker registration</h1>
+        ${this.reg ? this.reg.active?.scriptURL : 'no registration'}<br>
+        `;
+    }
+
+    render_caches() {
+        return html`
+        <h1>Caches</h1>
+        <button @click="${() => this.clickCacheDatas()}">Get Cache Datas</button><br>
+        ${this.cacheKeys && this.cacheKeys.length > 0 ?
                 html`
                 <ul>
                     ${this.cacheKeys.map((cache) => html`<li>${cache}</li>`)}
@@ -141,8 +147,13 @@ export class SWPanel extends LitElement {
                 `
                 : 'no cache data'
             }
-        </main>
-        `
+        `;
     }
 
+    render_manifest() {
+        return html`
+        <h1>Manifest</h1>
+        
+        `;
+    }
 }

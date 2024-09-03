@@ -1,4 +1,4 @@
-import { logDebug } from '../helper/helper';
+import { ID_PANEL, logDebug } from '../helper/helper';
 import { sendMessage } from 'webext-bridge/content-script';
 import { getCurrentRegistration } from '../pwa-console-sw';
 
@@ -23,7 +23,7 @@ export function getCurrentSWRegistration() {
                 regManual.scope = registration.scope;
             }
         }
-        sendMessage('sw-registration',
+        sendMessage(ID_PANEL,
             {
                 type: 'sw-registration',
                 registration: regManual
