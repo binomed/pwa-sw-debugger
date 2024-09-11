@@ -12,7 +12,7 @@ onMessage('current-sw-registration', (message) => {
   getCurrentSWRegistration()
 });
 onMessage('cache-keys', (message) => getCacheKeys());
-onMessage('cache-data', (message) => getCacheDatas());
+onMessage('cache-data', (message) => getCacheDatas(message.data.cacheKey));
 /**
 Listen for messages from our content script.
 */

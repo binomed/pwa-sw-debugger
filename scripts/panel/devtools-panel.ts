@@ -96,6 +96,14 @@ export class SWPanel extends LitElement {
 
     }
 
+    clickCache(cacheKey) {
+        sendMessage(
+            'cache-data',
+            { action: 'cache-data', cacheKey },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
+
+    }
+
     render() {
         return html`
         <menu>
@@ -137,7 +145,7 @@ export class SWPanel extends LitElement {
         ${this.cacheKeys && this.cacheKeys.length > 0 ?
                 html`
                 <ul>
-                    ${this.cacheKeys.map((cache) => html`<li>${cache}</li>`)}
+                    ${this.cacheKeys.map((cache) => html`<li><a href="#0" @click="${() => this.clickCache(cache)}">${cache}</a></li>`)}
                 </ul>
                 `
                 : 'no cache'
