@@ -109,9 +109,9 @@ export class SWPanel extends LitElement {
         <menu>
             <h3>PWA ServiceWorker Debugger</h3>
             <ul>
-                <li>Service worker</li>
-                <li>Cache</li>
-                <li>Manifest</li>
+                <li><a href="#service-worker">Service worker</a></li>
+                <li><a href="#caches">Caches</a></li>
+                <li><a href="#manifest">Manifest</a></li>
             </ul>
         </menu> 
         <main>
@@ -128,7 +128,7 @@ export class SWPanel extends LitElement {
 
     render_SW() {
         return html`
-        <h1>Service worker registration</h1>
+        <h1 id="service-worker">Service worker registration</h1>
         ${this.reg ? html`
             Installing : ${this.reg.installing ? 'installing : ' + this.reg.installing?.scriptURL : '--'}<br>
             Waiting : ${this.reg.waiting ? 'waiting : ' + this.reg.waiting?.scriptURL : '--'}<br>
@@ -140,7 +140,7 @@ export class SWPanel extends LitElement {
 
     render_caches() {
         return html`
-        <h1>Caches</h1>
+        <h1 id="caches">Caches</h1>
         <button @click="${() => this.clickCacheDatas()}">Get Cache Datas</button><br>
         ${this.cacheKeys && this.cacheKeys.length > 0 ?
                 html`
@@ -152,22 +152,42 @@ export class SWPanel extends LitElement {
             }
             <br>
             ${this.cacheMap ?
-                html`
-                <ul>
-                    ${Object.entries(this.cacheMap).map(([cacheKey, cacheValues]) => html`<li>
-                    ${cacheKey}
-                    <ul>${cacheValues.map((value) => html`<li>${value}</li>`)}
-                    </ul></li>`)}
-                </ul>
+                html`                
+                ${Object.entries(this.cacheMap).map(([cacheKey, cacheValues]) => html`
+                <h2>Cache entries for : "${cacheKey}"</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>url</th>
+                            <th>type</th>
+                            <th>status</th>
+                            <th>content-type</th>
+                            <th>size</th>
+                            <th>last-modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${cacheValues.map((value, index) => html`<tr>
+                            <td>${index}</td>
+                            <td>${value.url}</td>
+                            <td>${value.type}</td>
+                            <td>${value.status}</td>
+                            <td>${value['content-type']}</td>
+                            <td>${value.size}</td>
+                            <td>${value['last-modified']}</td>
+                        </tr>`)}
+                    </tbody>
+                </table>`)}
                 `
-                : 'no cache data'
+                : 'no cache data : click on a cache to see it\'s data'
             }
         `;
     }
 
     render_manifest() {
         return html`
-        <h1>Manifest</h1>
+        <h1 id="manifest">Manifest</h1>
         
         `;
     }
