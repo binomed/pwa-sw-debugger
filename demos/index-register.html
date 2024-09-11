@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Service Worker</title>
+</head>
+<body>
+    <h1>Test Service Worker</h1>
+    <p>This page will be cached</p>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw-register.js').then(function(registration) {
+                console.log('Service worker registration successful with scope: ', registration.scope);
+            }).catch(function(err) {
+                console.log('Service worker registration failed: ', err);
+            });
+        }
+    </script>
+    
+</body>
+</html>

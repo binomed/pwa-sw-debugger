@@ -4,9 +4,8 @@
     "description": "PWA Debug Tooling",
     "main": "index.js",
     "scripts": {
-        "start": "npm run prepare-build && npm run vite-build && npm run post-build && npm run serve-watch",
-        "serve-watch": "parallelshell \"npm run serve\" \"npm run build-watch\" ",
-        "serve": "live-server --host=localhost --port=8080 --open=\"./dist/panel/panel.html\" --watch=\"./dist/\"",
+        "start": "parallelshell \"npm run serve\" \"npm run dev\" ",
+        "serve": "live-server --host=localhost --port=8080 --entry-file=\"./demos/index.html\" --no-browser ",
         "prepare-build": "node ./build-scripts/prepare-build.js",
         "build": "npm run prepare-build && npm run vite-build",
         "vite-build": "npm run vite-build-background && npm run vite-build-panel && npm run vite-build-content && npm run vite-build-devtools",
@@ -15,7 +14,7 @@
         "vite-build-panel": "vite build --config vite.config.panel.ts",
         "vite-build-background": "vite build --config vite.config.background.ts",
         "web-ext":"npm run build && npm run web-ext:dev",
-        "web-ext:dev":"web-ext run --source-dir ./dist/ --start-url https://airhorner.com --devtools",
+        "web-ext:dev":"web-ext run --source-dir ./dist/ --start-url http://localhost:8080/demos/index.html",
         "on-change:build": "chokidar \"./scripts\" -c \"npm run build\"",
         "dev": "parallelshell \"npm run on-change:build\" \"npm run web-ext\"",
         "test": "echo \"Error: no test specified\" && exit 1"
