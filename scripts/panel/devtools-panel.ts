@@ -119,7 +119,12 @@ export class SWPanel extends LitElement {
     render_SW() {
         return html`
         <h1>Service worker registration</h1>
-        ${this.reg ? this.reg.active?.scriptURL : 'no registration'}<br>
+        ${this.reg ? html`
+            Installing : ${this.reg.installing ? 'installing : ' + this.reg.installing?.scriptURL : '--'}<br>
+            Waiting : ${this.reg.waiting ? 'waiting : ' + this.reg.waiting?.scriptURL : '--'}<br>
+            Active : ${this.reg.active ? 'active : ' + this.reg.active?.scriptURL : '--'}<br>
+            `
+                : 'no registration'}<br>
         `;
     }
 
