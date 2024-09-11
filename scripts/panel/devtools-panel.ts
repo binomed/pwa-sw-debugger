@@ -26,10 +26,12 @@ export class SWPanel extends LitElement {
             grid-template-rows: 1fr;
             grid-gap: 20px;
             grid-template-areas: "menu content";
+            background-color: white;
         }
 
         menu{
             grid-area:"menu";
+            background-color: ghostwhite;
         }
 
         main{
