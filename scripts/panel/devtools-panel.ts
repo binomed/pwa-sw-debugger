@@ -1,10 +1,9 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { ID_CONTENT_SCRIPT, ID_PANEL, logDebug } from '../helper/helper';
-//import { sendDataFromPanelToContentScript } from '../helper/message-helper';
+import { customElement } from 'lit/decorators.js';
+import { ID_PANEL } from '../helper/helper';
 import { sendMessage, onMessage } from "webext-bridge/devtools";
 import browser from "webextension-polyfill"
-import { send } from 'process';
+import { CacheEntry } from '../models/model';
 
 
 
@@ -40,9 +39,10 @@ export class SWPanel extends LitElement {
         `
     ]
 
+    // Model 
     reg: ServiceWorkerRegistration | undefined;
     cacheKeys: string[] | undefined;
-    cacheMap: any;
+    cacheEntry: CacheEntry;
 
     constructor() {
         super();
@@ -81,7 +81,7 @@ export class SWPanel extends LitElement {
                 this.cacheKeys = message.data.cacheEntries;
                 break;
             case 'cache-data':
-                this.cacheMap = message.data.cacheMap;
+                this.cacheEntry = message.data.cacheEntry;
                 break;
         }
         this.requestUpdate();
@@ -96,13 +96,6 @@ export class SWPanel extends LitElement {
 
     }
 
-    clickCache(cacheKey) {
-        sendMessage(
-            'cache-data',
-            { action: 'cache-data', cacheKey },
-            'content-script@' + browser.devtools.inspectedWindow.tabId);
-
-    }
 
     render() {
         return html`
@@ -115,80 +108,17 @@ export class SWPanel extends LitElement {
             </ul>
         </menu> 
         <main>
-            ${this.render_SW()}
+            <sw-registration .reg="${this.reg}"></sw-registration>
             <hr>
-            ${this.render_caches()}
+            <cache-section .cacheKeys="${this.cacheKeys}" .cacheEntry="${this.cacheEntry}"></cache-section>
             <hr>
-            ${this.render_manifest()}
+            <manifest-section></manifest-section>
             
         </main>
         `
     }
 
 
-    render_SW() {
-        return html`
-        <h1 id="service-worker">Service worker registration</h1>
-        ${this.reg ? html`
-            Installing : ${this.reg.installing ? 'installing : ' + this.reg.installing?.scriptURL : '--'}<br>
-            Waiting : ${this.reg.waiting ? 'waiting : ' + this.reg.waiting?.scriptURL : '--'}<br>
-            Active : ${this.reg.active ? 'active : ' + this.reg.active?.scriptURL : '--'}<br>
-            `
-                : 'no registration'}<br>
-        `;
-    }
 
-    render_caches() {
-        return html`
-        <h1 id="caches">Caches</h1>
-        <button @click="${() => this.clickCacheDatas()}">Get Cache Datas</button><br>
-        ${this.cacheKeys && this.cacheKeys.length > 0 ?
-                html`
-                <ul>
-                    ${this.cacheKeys.map((cache) => html`<li><a href="#0" @click="${() => this.clickCache(cache)}">${cache}</a></li>`)}
-                </ul>
-                `
-                : 'no cache'
-            }
-            <br>
-            ${this.cacheMap ?
-                html`                
-                ${Object.entries(this.cacheMap).map(([cacheKey, cacheValues]) => html`
-                <h2>Cache entries for : "${cacheKey}"</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>url</th>
-                            <th>type</th>
-                            <th>status</th>
-                            <th>content-type</th>
-                            <th>size</th>
-                            <th>last-modified</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${cacheValues.map((value, index) => html`<tr>
-                            <td>${index}</td>
-                            <td>${value.url}</td>
-                            <td>${value.type}</td>
-                            <td>${value.status}</td>
-                            <td>${value['content-type']}</td>
-                            <td>${value.size}</td>
-                            <td>${value['last-modified']}</td>
-                        </tr>`)}
-                    </tbody>
-                </table>`)}
-                `
-                : 'no cache data : click on a cache to see it\'s data'
-            }
-        `;
-    }
 
-    render_manifest() {
-        return html`
-        <h1 id="manifest">Manifest</h1>
-        
-        `;
-    }
 }

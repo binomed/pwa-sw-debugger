@@ -7,7 +7,7 @@ export default defineConfig({
         sourcemap: true,
         lib: {
             name: 'background',
-            entry: resolve(__dirname, 'scripts/panel/devtools-panel.ts'),
+            entry: resolve(__dirname, 'scripts/panel/index.ts'),
             formats: ['iife'],
         },
         emptyOutDir: false,

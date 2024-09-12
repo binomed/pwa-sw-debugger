@@ -1,15 +1,19 @@
 import { sendMessage } from "webext-bridge/content-script";
 import { ID_PANEL, logDebug } from "../helper/helper";
+import { CacheEntry } from "../models/model";
+
 
 export function getCacheDatas(cacheKey: string) {
     caches.open(cacheKey).then(async (cache) => {
-        const cacheMap = {};
-        cacheMap[cacheKey] = []
+        const cacheEntry: CacheEntry = {
+            cacheKey,
+            cacheValues: []
+        };
         const entries = await cache.keys();
         for (let entry of entries) {
             const response = await cache.match(entry);
             logDebug(`-->${entry.url}`, response);
-            cacheMap[cacheKey].push({
+            cacheEntry.cacheValues.push({
                 url: response.url,
                 type: response.type,
                 status: response.status,
@@ -21,7 +25,7 @@ export function getCacheDatas(cacheKey: string) {
         sendMessage(ID_PANEL,
             {
                 type: 'cache-data',
-                cacheMap
+                cacheEntry: (cacheEntry as any),
             }, 'devtools');
 
     });
