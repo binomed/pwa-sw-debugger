@@ -7,3 +7,6 @@ export * from './manifest-section.component';
 // Cache components
 export * from './cache-list.component';
 export * from './cache-table.component';
+export * from './cache-details.component';
+export * from './cache-header.component';
+export * from './cache-preview.component';

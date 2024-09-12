@@ -70,6 +70,8 @@ export class CacheTableComponent extends LitElement {
 
     selectRow(index: number) {
         this.indexRowActive = index;
+        const event = new CustomEvent('cache-row', { detail: this.cacheEntry.cacheValues[index] });
+        this.dispatchEvent(event);
         this.requestUpdate();
     }
 
