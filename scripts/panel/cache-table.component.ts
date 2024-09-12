@@ -1,4 +1,4 @@
-import { LitElement, css, html } from "lit";
+import { LitElement, PropertyDeclaration, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { CacheEntry } from "../models/model";
@@ -54,11 +54,24 @@ export class CacheTableComponent extends LitElement {
     @property()
     cacheEntry: CacheEntry;
 
+    indexRowActive = -1;
+
 
     constructor() {
         super();
     }
 
+    requestUpdate(name?: PropertyKey, oldValue?: unknown, options?: PropertyDeclaration): void {
+        if (name === 'cacheEntry') {
+            this.indexRowActive = -1;
+        }
+        super.requestUpdate(name, oldValue, options);
+    }
+
+    selectRow(index: number) {
+        this.indexRowActive = index;
+        this.requestUpdate();
+    }
 
     render_table() {
         return html`
@@ -77,7 +90,9 @@ export class CacheTableComponent extends LitElement {
                 </thead>
                 <tbody>
                     ${this.cacheEntry.cacheValues.map((value, index) => html`
-                    <tr>
+                    <tr 
+                        class="${index === this.indexRowActive ? 'active-row' : ''}" 
+                        @click="${() => this.selectRow(index)}">     
                         <td>${index}</td>
                         <td>${value.url}</td>
                         <td>${value.type}</td>
