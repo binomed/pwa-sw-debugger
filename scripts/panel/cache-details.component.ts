@@ -1,7 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
-import { CacheValue } from "../models/model";
+import { CacheDetails, CacheValue } from "../models/model";
 
 
 @customElement('cache-details')
@@ -38,7 +38,7 @@ export class CacheDetailsComponent extends LitElement {
     activeTab = 'header';
 
     @property()
-    cacheValue: CacheValue;
+    cacheDetails: CacheDetails;
 
     constructor() {
         super();
@@ -50,13 +50,16 @@ export class CacheDetailsComponent extends LitElement {
     }
 
     render() {
-        return html`${this.cacheValue ? html`        
+        return html`${this.cacheDetails ? html`        
             <div class="tabs">
                 <div class="tab ${this.activeTab === 'header' ? 'active' : ''}" @click="${() => this.selectTab('header')}">Header</div>
                 <div class="tab ${this.activeTab === 'preview' ? 'active' : ''}" @click="${() => this.selectTab('preview')}">Preview</div>
             </div>
             <div class="tab-content">
-                ${this.activeTab === 'header' ? html`<cache-header></cache-header>` : html`<cache-preview></cache-preview>`}
+                ${this.activeTab === 'header' ?
+                html`<cache-header .request="${this.cacheDetails.request}"></cache-header>`
+                :
+                html`<cache-preview .response="${this.cacheDetails.response}"></cache-preview>`}
             </div>
         `: 'Select a cache to see it\'s data'}`;
     }

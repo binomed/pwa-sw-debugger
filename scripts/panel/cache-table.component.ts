@@ -1,4 +1,4 @@
-import { LitElement, PropertyDeclaration, css, html } from "lit";
+import { LitElement, PropertyDeclaration, PropertyValues, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { CacheEntry } from "../models/model";
@@ -61,17 +61,26 @@ export class CacheTableComponent extends LitElement {
         super();
     }
 
-    requestUpdate(name?: PropertyKey, oldValue?: unknown, options?: PropertyDeclaration): void {
-        if (name === 'cacheEntry') {
+    protected updated(_changedProperties: PropertyValues): void {
+        if (_changedProperties.has('cacheEntry')) {
             this.indexRowActive = -1;
+            this.requestUpdate();
         }
-        super.requestUpdate(name, oldValue, options);
     }
+
 
     selectRow(index: number) {
         this.indexRowActive = index;
         const event = new CustomEvent('cache-row', { detail: this.cacheEntry.cacheValues[index] });
         this.dispatchEvent(event);
+        sendMessage(
+            'cache-details',
+            {
+                action: 'cache-details',
+                cacheKey: this.cacheEntry.cacheKey,
+                url: this.cacheEntry.cacheValues[index].url
+            },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
         this.requestUpdate();
     }
 

@@ -15,7 +15,8 @@ export class CacheHeaderComponent extends LitElement {
         `
     ]
 
-
+    @property()
+    request: Request;
 
     constructor() {
         super();
@@ -24,6 +25,7 @@ export class CacheHeaderComponent extends LitElement {
     render() {
         return html`
                   HEADER
+                  ${JSON.stringify(this.request, null, 4)}
         `;
     }
 }

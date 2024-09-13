@@ -15,7 +15,8 @@ export class CachePreviewComponent extends LitElement {
         `
     ]
 
-
+    @property()
+    response: Response;
 
     constructor() {
         super();
@@ -24,6 +25,7 @@ export class CachePreviewComponent extends LitElement {
     render() {
         return html`
                   PREVIEW
+                  ${JSON.stringify(this.response, null, 4)}
         `;
     }
 }

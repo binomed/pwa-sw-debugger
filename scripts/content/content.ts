@@ -4,6 +4,7 @@ import { getCacheDatas } from "../inject/cacheDatas";
 import { getCacheKeys } from "../inject/cacheKeys";
 import { getCurrentSWRegistration } from "../inject/getCurrentSW";
 import { sendMessage, onMessage } from "webext-bridge/content-script";
+import { getCacheDetails } from "../inject/cacheDetails";
 
 
 
@@ -13,6 +14,7 @@ onMessage('current-sw-registration', (message) => {
 });
 onMessage('cache-keys', (message) => getCacheKeys());
 onMessage('cache-data', (message) => getCacheDatas(message.data.cacheKey));
+onMessage('cache-details', (message) => getCacheDetails(message.data.cacheKey, message.data.url));
 /**
 Listen for messages from our content script.
 */

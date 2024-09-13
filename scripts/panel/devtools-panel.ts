@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js';
 import { ID_PANEL } from '../helper/helper';
 import { sendMessage, onMessage } from "webext-bridge/devtools";
 import browser from "webextension-polyfill"
-import { CacheEntry } from '../models/model';
+import { CacheDetails, CacheEntry, CacheValue } from '../models/model';
 
 
 
@@ -43,6 +43,7 @@ export class SWPanel extends LitElement {
     reg: ServiceWorkerRegistration | undefined;
     cacheKeys: string[] | undefined;
     cacheEntry: CacheEntry;
+    cacheDetails: CacheDetails;
 
     constructor() {
         super();
@@ -83,6 +84,9 @@ export class SWPanel extends LitElement {
             case 'cache-data':
                 this.cacheEntry = message.data.cacheEntry;
                 break;
+            case 'cache-details':
+                this.cacheDetails = message.data.cacheDetails;
+                break;
         }
         this.requestUpdate();
     }
@@ -110,7 +114,10 @@ export class SWPanel extends LitElement {
         <main>
             <sw-registration .reg="${this.reg}"></sw-registration>
             <hr>
-            <cache-section .cacheKeys="${this.cacheKeys}" .cacheEntry="${this.cacheEntry}"></cache-section>
+            <cache-section 
+                .cacheKeys="${this.cacheKeys}" 
+                .cacheEntry="${this.cacheEntry}"
+                .cacheDetails="${this.cacheDetails}"></cache-section>
             <hr>
             <manifest-section></manifest-section>
             

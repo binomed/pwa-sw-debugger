@@ -1,7 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
-import { CacheEntry, CacheValue } from "../models/model";
+import { CacheDetails, CacheEntry, CacheValue } from "../models/model";
 
 
 @customElement('cache-section')
@@ -19,6 +19,9 @@ export class CacheSectionComponent extends LitElement {
 
     @property()
     cacheEntry: CacheEntry;
+
+    @property()
+    cacheDetails: CacheDetails;
 
     cacheValue: CacheValue;
 
@@ -48,7 +51,8 @@ export class CacheSectionComponent extends LitElement {
         <cache-table .cacheEntry="${this.cacheEntry}"
             @cache-row="${(e) => this.selectCacheValue(e.detail)}"></cache-table>            
         <br>
-        <cache-details .cacheValue="${this.cacheValue}"></cache-details>
+        <cache-details 
+            .cacheDetails="${this.cacheDetails}"></cache-details>
         `;
     }
 }
