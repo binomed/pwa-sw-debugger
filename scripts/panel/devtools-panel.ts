@@ -4,11 +4,13 @@ import { ID_PANEL } from '../helper/helper';
 import { sendMessage, onMessage } from "webext-bridge/devtools";
 import browser from "webextension-polyfill"
 import { CacheDetails, CacheEntry, CacheValue } from '../models/model';
+import { ParentComponent } from '../helper/parent-component';
 
 
 
 @customElement('sw-debug-panel')
-export class SWPanel extends LitElement {
+export class SWPanel extends ParentComponent {
+
 
     static styles = [
         css`
@@ -103,6 +105,7 @@ export class SWPanel extends LitElement {
 
     render() {
         return html`
+        ${super.render()}
         <menu>
             <h3>PWA ServiceWorker Debugger</h3>
             <ul>

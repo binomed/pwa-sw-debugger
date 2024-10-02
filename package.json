@@ -13,8 +13,8 @@
         "vite-build-content": "vite build --config vite.config.content.ts",
         "vite-build-panel": "vite build --config vite.config.panel.ts",
         "vite-build-background": "vite build --config vite.config.background.ts",
-        "web-ext":"npm run build && npm run web-ext:dev",
-        "web-ext:dev":"web-ext run --source-dir ./dist/ --start-url http://localhost:8080/demos/index.html",
+        "web-ext": "npm run build && npm run web-ext:dev",
+        "web-ext:dev": "web-ext run --source-dir ./dist/ --start-url http://localhost:8080/demos/index.html",
         "on-change:build": "chokidar \"./scripts\" -c \"npm run build\"",
         "dev": "parallelshell \"npm run on-change:build\" \"npm run web-ext\"",
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -54,6 +54,7 @@
         "webextension-polyfill": "^0.12.0"
     },
     "dependencies": {
+        "@picocss/pico": "^2.0.6",
         "@types/webextension-polyfill": "^0.12.0",
         "firebase": "^9.19.1",
         "firebaseui": "^6.0.2",

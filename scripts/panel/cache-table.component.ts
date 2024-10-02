@@ -2,17 +2,19 @@ import { LitElement, PropertyDeclaration, PropertyValues, css, html } from "lit"
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { CacheEntry } from "../models/model";
+import { ParentComponent } from "../helper/parent-component";
 
 
 @customElement('cache-table')
-export class CacheTableComponent extends LitElement {
+export class CacheTableComponent extends ParentComponent {
+
 
     static styles = [
         css`
         :host{                      
         }
 
-        .styled-table {
+        /*.styled-table {
             border-collapse: collapse;
             margin: 25px 0;
             font-size: 0.9em;
@@ -42,7 +44,7 @@ export class CacheTableComponent extends LitElement {
 
         .styled-table tbody tr:last-of-type {
             border-bottom: 2px solid #009879;
-        }
+        }*/
 
         .styled-table tbody tr.active-row {
             font-weight: bold;
@@ -87,16 +89,16 @@ export class CacheTableComponent extends LitElement {
     render_table() {
         return html`
             <h2>Cache entries for : "${this.cacheEntry.cacheKey}"</h2>
-            <table class="styled-table">
+            <table class="styled-table stripped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>url</th>
-                        <th>type</th>
-                        <th>status</th>
-                        <th>content-type</th>
-                        <th>size</th>
-                        <th>last-modified</th>
+                        <th scope="col">#</th>
+                        <th scope="col">url</th>
+                        <th scope="col">type</th>
+                        <th scope="col">status</th>
+                        <th scope="col">content-type</th>
+                        <th scope="col">size</th>
+                        <th scope="col">last-modified</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -104,7 +106,7 @@ export class CacheTableComponent extends LitElement {
                     <tr 
                         class="${index === this.indexRowActive ? 'active-row' : ''}" 
                         @click="${() => this.selectRow(index)}">     
-                        <td>${index}</td>
+                        <th  scope="row">${index}</th>
                         <td>${value.url}</td>
                         <td>${value.type}</td>
                         <td>${value.status}</td>
@@ -119,6 +121,7 @@ export class CacheTableComponent extends LitElement {
 
     render() {
         return html`
+            ${super.render()}
                    ${this.cacheEntry ?
                 this.render_table()
                 : 'no cache data : click on a cache to see it\'s data'

@@ -1,4 +1,5 @@
 import browser from "webextension-polyfill";
+import "@picocss/pico/css/pico.min.css";
 
 
 /**

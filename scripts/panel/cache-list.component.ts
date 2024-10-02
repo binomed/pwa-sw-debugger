@@ -1,10 +1,12 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
+import { ParentComponent } from "../helper/parent-component";
 
 
 @customElement('cache-list')
-export class CacheListComponent extends LitElement {
+export class CacheListComponent extends ParentComponent {
+
 
     static styles = [
         css`
@@ -39,6 +41,7 @@ export class CacheListComponent extends LitElement {
 
     render() {
         return html`        
+            ${super.render()}
         ${this.cacheKeys && this.cacheKeys.length > 0 ?
                 this.render_list()
                 : 'no cache'
