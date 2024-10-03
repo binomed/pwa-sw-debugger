@@ -1,5 +1,6 @@
 const shelljs = require('shelljs');
 
+
 prepareDist();
 
 function prepareDist() {
@@ -8,3 +9,8 @@ function prepareDist() {
     //shelljs.cp('-rf', './scripts', './dist/scripts');
     shelljs.cp('-rf', './public/*', './dist/');
 }
+
+module.exports = {
+    prepareDist
+}
+
