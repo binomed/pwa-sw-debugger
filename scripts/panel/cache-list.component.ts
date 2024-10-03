@@ -34,9 +34,10 @@ export class CacheListComponent extends ParentComponent {
 
     render_list() {
         return html`
-            <ul>
-                ${this.cacheKeys.map((cache) => html`<li><a href="#0" @click="${() => this.clickCache(cache)}">${cache}</a></li>`)}
-            </ul>       
+        <select name="select" aria-label="Select" @change="${(e) => this.clickCache(e.target.value)}">
+            <option selected disabled value="">Select a cache</option>
+            ${this.cacheKeys.map((cache) => html`<option value="${cache}">${cache}</option>`)}
+        </select>
         `;
     }
 

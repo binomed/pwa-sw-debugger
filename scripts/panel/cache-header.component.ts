@@ -49,7 +49,6 @@ export class CacheHeaderComponent extends ParentComponent {
     render() {
         return html`
             ${super.render()}
-                  HEADER
                   <details>
                     <summary role="button" class="secondary">General </summary>
                     <div class="details-header">

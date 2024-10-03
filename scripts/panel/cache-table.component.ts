@@ -90,33 +90,35 @@ export class CacheTableComponent extends ParentComponent {
     render_table() {
         return html`
             <h2>Cache entries for : "${this.cacheEntry.cacheKey}"</h2>
-            <table class="styled-table stripped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">url</th>
-                        <th scope="col">type</th>
-                        <th scope="col">status</th>
-                        <th scope="col">content-type</th>
-                        <th scope="col">size</th>
-                        <th scope="col">last-modified</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${this.cacheEntry.cacheValues.map((value, index) => html`
-                    <tr 
-                        class="${index === this.indexRowActive ? 'active-row' : ''}" 
-                        @click="${() => this.selectRow(index)}">     
-                        <th  scope="row">${index}</th>
-                        <td>${value.url}</td>
-                        <td>${value.type}</td>
-                        <td>${value.status}</td>
-                        <td>${value['content-type']}</td>
-                        <td>${value.size}</td>
-                        <td>${value['last-modified']}</td>
-                    </tr>`)}
-                </tbody>
-            </table>
+            <div class="overflow-auto">
+                <table class="styled-table stripped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">url</th>
+                            <th scope="col">type</th>
+                            <th scope="col">status</th>
+                            <th scope="col">content-type</th>
+                            <th scope="col">size</th>
+                            <th scope="col">last-modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${this.cacheEntry.cacheValues.map((value, index) => html`
+                        <tr 
+                            class="${index === this.indexRowActive ? 'active-row' : ''}" 
+                            @click="${() => this.selectRow(index)}">     
+                            <th  scope="row">${index}</th>
+                            <td>${value.url}</td>
+                            <td>${value.type}</td>
+                            <td>${value.status}</td>
+                            <td>${value['content-type']}</td>
+                            <td>${value.size}</td>
+                            <td>${value['last-modified']}</td>
+                        </tr>`)}
+                    </tbody>
+                </table>
+            </div>
             `
     }
 

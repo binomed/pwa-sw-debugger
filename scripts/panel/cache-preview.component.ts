@@ -27,8 +27,9 @@ export class CachePreviewComponent extends ParentComponent {
     render() {
         return html`
             ${super.render()}
-                  PREVIEW
-                  ${JSON.stringify(this.response, null, 4)}
+                  <div class="overflow-auto containe-fluid">
+                  ${this.response.body}
+                  </div>
         `;
     }
 }
