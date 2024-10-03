@@ -1,3 +1,4 @@
+import browser from "webextension-polyfill";
 import { LitElement, PropertyDeclaration, PropertyValues, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
@@ -47,8 +48,8 @@ export class CacheTableComponent extends ParentComponent {
         }*/
 
         .styled-table tbody tr.active-row {
-            font-weight: bold;
-            color: #009879;
+            --pico-color:#009879;
+            --pico-font-weight: bold;
         }
         `
     ]

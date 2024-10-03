@@ -1,3 +1,4 @@
+import browser from "webextension-polyfill";
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";

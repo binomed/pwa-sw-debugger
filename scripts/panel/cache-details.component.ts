@@ -61,7 +61,7 @@ export class CacheDetailsComponent extends ParentComponent {
             </div>
             <div class="tab-content">
                 ${this.activeTab === 'header' ?
-                    html`<cache-header .request="${this.cacheDetails.request}"></cache-header>`
+                    html`<cache-header .request="${this.cacheDetails.request}" .responseHeader="${this.cacheDetails.response.headers}"></cache-header>`
                     :
                     html`<cache-preview .response="${this.cacheDetails.response}"></cache-preview>`}
             </div>
