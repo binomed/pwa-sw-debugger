@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { ID_PANEL } from '../helper/helper';
+import { ID_PANEL, KEY_CACHE_DATA, KEY_CACHE_DETAILS, KEY_CACHE_KEYS, KEY_CURRENT_SW_REGISTRATION, KEY_MANIFEST_DATA } from '../models/consts';
 import { sendMessage, onMessage } from "webext-bridge/devtools";
 import browser from "webextension-polyfill"
 import { CacheDetails, CacheEntry, CacheValue } from '../models/model';
@@ -61,14 +61,15 @@ export class SWPanel extends ParentComponent {
     initBaseElements() {
         // Ask sw registration 
         sendMessage(
-            'current-sw-registration',
-            { action: 'current-sw-registration' },
+            KEY_CURRENT_SW_REGISTRATION,
+            { action: KEY_CURRENT_SW_REGISTRATION },
             'content-script@' + browser.devtools.inspectedWindow.tabId);
 
         // Ask cache keys
         sendMessage(
-            'cache-keys',
-            { action: 'cache-keys' },
+            KEY_CACHE_KEYS,
+            { action: KEY_CACHE_KEYS },
+            'content-script@' + browser.devtools.inspectedWindow.tabId);
             'content-script@' + browser.devtools.inspectedWindow.tabId);
     }
 
@@ -76,17 +77,17 @@ export class SWPanel extends ParentComponent {
         console.log("Message recieved by devtools-panel", message);
 
         switch (message.data.type) {
-            case 'sw-registration':
-                console.log('sw-registration', message.data);
+            case KEY_CURRENT_SW_REGISTRATION:
+                console.log(KEY_CURRENT_SW_REGISTRATION, message.data);
                 this.reg = message.data.registration;
                 break;
-            case 'cache-entries':
+            case KEY_CACHE_KEYS:
                 this.cacheKeys = message.data.cacheEntries;
                 break;
-            case 'cache-data':
+            case KEY_CACHE_DATA:
                 this.cacheEntry = message.data.cacheEntry;
                 break;
-            case 'cache-details':
+            case KEY_CACHE_DETAILS:
                 this.cacheDetails = message.data.cacheDetails;
                 break;
         }
@@ -96,8 +97,8 @@ export class SWPanel extends ParentComponent {
 
     clickCacheDatas() {
         sendMessage(
-            'cache-data',
-            { action: 'cache-data' },
+            KEY_CACHE_DATA,
+            { action: KEY_CACHE_DATA },
             'content-script@' + browser.devtools.inspectedWindow.tabId);
 
     }

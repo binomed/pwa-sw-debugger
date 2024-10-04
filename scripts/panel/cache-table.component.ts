@@ -4,6 +4,7 @@ import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { CacheEntry } from "../models/model";
 import { ParentComponent } from "../helper/parent-component";
+import { KEY_CACHE_DETAILS } from "../models/consts";
 
 
 @customElement('cache-table')
@@ -77,9 +78,9 @@ export class CacheTableComponent extends ParentComponent {
         const event = new CustomEvent('cache-row', { detail: this.cacheEntry.cacheValues[index] });
         this.dispatchEvent(event);
         sendMessage(
-            'cache-details',
+            KEY_CACHE_DETAILS,
             {
-                action: 'cache-details',
+                action: KEY_CACHE_DETAILS,
                 cacheKey: this.cacheEntry.cacheKey,
                 url: this.cacheEntry.cacheValues[index].url
             },

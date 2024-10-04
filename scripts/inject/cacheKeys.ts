@@ -1,5 +1,6 @@
 import { sendMessage } from "webext-bridge/content-script";
-import { ID_PANEL, logDebug } from "../helper/helper";
+import { logDebug } from "../helper/helper";
+import { ID_PANEL, KEY_CACHE_KEYS } from "../models/consts";
 
 export function getCacheKeys() {
     caches.keys()
@@ -7,7 +8,7 @@ export function getCacheKeys() {
             logDebug(`List of all caches : [${cacheEntries.join(',')}]`)
             sendMessage(ID_PANEL,
                 {
-                    type: 'cache-entries',
+                    type: KEY_CACHE_KEYS,
                     cacheEntries
                 }, 'devtools');
 

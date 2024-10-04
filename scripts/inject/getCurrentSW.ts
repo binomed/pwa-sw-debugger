@@ -1,7 +1,7 @@
-import { ID_PANEL, logDebug } from '../helper/helper';
+import { logDebug } from '../helper/helper';
 import { sendMessage } from 'webext-bridge/content-script';
 import { getCurrentRegistration } from '../pwa-console-sw';
-import { state } from 'lit/decorators';
+import { ID_PANEL, KEY_CURRENT_SW_REGISTRATION } from '../models/consts';
 
 export function getCurrentSWRegistration() {
     getCurrentRegistration().then((registration) => {
@@ -32,7 +32,7 @@ export function getCurrentSWRegistration() {
         }
         sendMessage(ID_PANEL,
             {
-                type: 'sw-registration',
+                type: KEY_CURRENT_SW_REGISTRATION,
                 registration: regManual
             }, 'devtools');
     });

@@ -1,6 +1,7 @@
 import { sendMessage } from "webext-bridge/content-script";
-import { ID_PANEL, logDebug } from "../helper/helper";
+import { logDebug } from "../helper/helper";
 import { CacheDetails, ClonedHeaders } from "../models/model";
+import { ID_PANEL, KEY_CACHE_DETAILS } from "../models/consts";
 
 
 export function getCacheDetails(cacheKey: string, url: string) {
@@ -66,7 +67,7 @@ export function getCacheDetails(cacheKey: string, url: string) {
 
             sendMessage(ID_PANEL,
                 {
-                    type: 'cache-details',
+                    type: KEY_CACHE_DETAILS,
                     cacheDetails: (cacheDetails as any),
                 }, 'devtools');
 

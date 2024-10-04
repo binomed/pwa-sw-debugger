@@ -1,20 +1,23 @@
 import { on } from "events";
-import { ID_CONTENT_SCRIPT, ID_MAIN_SCRIPT, logDebug } from "../helper/helper";
+import { logDebug } from "../helper/helper";
 import { getCacheDatas } from "../inject/cacheDatas";
 import { getCacheKeys } from "../inject/cacheKeys";
 import { getCurrentSWRegistration } from "../inject/getCurrentSW";
 import { sendMessage, onMessage } from "webext-bridge/content-script";
 import { getCacheDetails } from "../inject/cacheDetails";
+import { KEY_CACHE_DATA, KEY_CACHE_DETAILS, KEY_CACHE_KEYS, KEY_CURRENT_SW_REGISTRATION, KEY_MANIFEST_DATA } from "../models/consts";
+import { getManifest } from "../inject/manifest";
 
 
 
-onMessage('current-sw-registration', (message) => {
-  console.log('current-sw-registration', message);
+onMessage(KEY_CURRENT_SW_REGISTRATION, (message) => {
+  console.log(KEY_CURRENT_SW_REGISTRATION, message);
   getCurrentSWRegistration()
 });
-onMessage('cache-keys', (message) => getCacheKeys());
-onMessage('cache-data', (message) => getCacheDatas(message.data.cacheKey));
-onMessage('cache-details', (message) => getCacheDetails(message.data.cacheKey, message.data.url));
+onMessage(KEY_CACHE_KEYS, (message) => getCacheKeys());
+onMessage(KEY_CACHE_DATA, (message) => getCacheDatas(message.data.cacheKey));
+onMessage(KEY_CACHE_DETAILS, (message) => getCacheDetails(message.data.cacheKey, message.data.url));
+onMessage(KEY_MANIFEST_DATA, (message) => getManifest());
 /**
 Listen for messages from our content script.
 */

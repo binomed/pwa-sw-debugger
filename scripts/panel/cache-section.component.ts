@@ -4,6 +4,7 @@ import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { CacheDetails, CacheEntry, CacheValue } from "../models/model";
 import { ParentComponent } from "../helper/parent-component";
+import { KEY_CACHE_DATA } from "../models/consts";
 
 
 @customElement('cache-section')
@@ -34,8 +35,8 @@ export class CacheSectionComponent extends ParentComponent {
 
     clickCache(cacheKey) {
         sendMessage(
-            'cache-data',
-            { action: 'cache-data', cacheKey },
+            KEY_CACHE_DATA,
+            { action: KEY_CACHE_DATA, cacheKey },
             'content-script@' + browser.devtools.inspectedWindow.tabId);
 
     }

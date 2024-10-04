@@ -3,6 +3,7 @@ import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { ParentComponent } from "../helper/parent-component";
+import { KEY_CACHE_DATA, KEY_CACHE_DETAILS } from "../models/consts";
 
 
 @customElement('cache-list')
@@ -26,8 +27,8 @@ export class CacheListComponent extends ParentComponent {
 
     clickCache(cacheKey) {
         sendMessage(
-            'cache-data',
-            { action: 'cache-data', cacheKey },
+            KEY_CACHE_DATA,
+            { action: KEY_CACHE_DATA, cacheKey },
             'content-script@' + browser.devtools.inspectedWindow.tabId);
 
     }
