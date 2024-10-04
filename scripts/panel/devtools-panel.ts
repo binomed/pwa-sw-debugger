@@ -3,7 +3,7 @@ import { customElement } from 'lit/decorators.js';
 import { ID_PANEL, KEY_CACHE_DATA, KEY_CACHE_DETAILS, KEY_CACHE_KEYS, KEY_CURRENT_SW_REGISTRATION, KEY_MANIFEST_DATA } from '../models/consts';
 import { sendMessage, onMessage } from "webext-bridge/devtools";
 import browser from "webextension-polyfill"
-import { CacheDetails, CacheEntry, CacheValue } from '../models/model';
+import { CacheDetails, CacheEntry, CacheValue, Manifest, ManifestData } from '../models/model';
 import { ParentComponent } from '../helper/parent-component';
 
 
@@ -46,6 +46,7 @@ export class SWPanel extends ParentComponent {
     cacheKeys: string[] | undefined;
     cacheEntry: CacheEntry;
     cacheDetails: CacheDetails;
+    manifestData: ManifestData;
 
     constructor() {
         super();
@@ -70,6 +71,11 @@ export class SWPanel extends ParentComponent {
             KEY_CACHE_KEYS,
             { action: KEY_CACHE_KEYS },
             'content-script@' + browser.devtools.inspectedWindow.tabId);
+
+        // Ask manifest data
+        sendMessage(
+            KEY_MANIFEST_DATA,
+            { action: KEY_MANIFEST_DATA },
             'content-script@' + browser.devtools.inspectedWindow.tabId);
     }
 
@@ -89,6 +95,9 @@ export class SWPanel extends ParentComponent {
                 break;
             case KEY_CACHE_DETAILS:
                 this.cacheDetails = message.data.cacheDetails;
+                break;
+            case KEY_MANIFEST_DATA:
+                this.manifestData = message.data.mainfestData;
                 break;
         }
         this.requestUpdate();
@@ -123,7 +132,7 @@ export class SWPanel extends ParentComponent {
                 .cacheEntry="${this.cacheEntry}"
                 .cacheDetails="${this.cacheDetails}"></cache-section>
             <hr>
-            <manifest-section></manifest-section>
+            <manifest-section .manifestData="${this.manifestData}"></manifest-section>
             
         </main>
         `

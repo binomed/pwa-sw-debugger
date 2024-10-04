@@ -3,6 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { sendMessage } from "webext-bridge/devtools";
 import { CacheEntry, ClonedHeaders, ClonedRequest } from "../models/model";
 import { ParentComponent } from "../helper/parent-component";
+import { sharedGridInfo } from "../styles/shared-styles";
 
 
 @customElement('cache-header')
@@ -10,16 +11,12 @@ export class CacheHeaderComponent extends ParentComponent {
 
 
     static styles = [
+        sharedGridInfo,
         css`
         :host{                      
         }
 
-        .details-header{
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            grid-row-gap: 5px;
-
-        }
+       
 
         details:not([open]) summary span{
             display: inline    
@@ -51,20 +48,20 @@ export class CacheHeaderComponent extends ParentComponent {
             ${super.render()}
                   <details>
                     <summary role="button" class="secondary">General </summary>
-                    <div class="details-header">
+                    <div class="grid-info">
                         <div class="header-entry">url:</div><div class="header-value">${this.request.url}</div>
                         <div class="header-entry">method:</div><div class="header-value">${this.request.method}</div>
                     </div>
                   </details>
                   <details>
                     <summary role="button" class="secondary">Request headers <span>(${Object.keys(this.request.headers).length})</span></summary>
-                    <div class="details-header">
+                    <div class="grid-info">
                         ${this.displayHeader(this.request.headers)}
                     </div>
                 </details>
                 <details>
                     <summary role="button" class="secondary">Response headers <span>(${Object.keys(this.responseHeader).length})</span></summary>
-                    <div class="details-header">
+                    <div class="grid-info">
                         ${this.displayHeader(this.responseHeader)}
                     </div>
                 </details>

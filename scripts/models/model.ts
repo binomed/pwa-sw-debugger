@@ -49,3 +49,32 @@ export interface CacheDetails {
     request: ClonedRequest;
     response: ClonedResponse;
 }
+
+export interface Icon {
+    src: string;
+    sizes: string;
+    type: string;
+    purpose: string;
+    base64: string;
+}
+
+export interface ManifestData {
+    path: string;
+    hasManifest: boolean;
+    manifest: Manifest;
+}
+export interface Manifest {
+    name: string;
+    short_name: string;
+    description: string;
+    icons: Icon[];
+    start_url: string;
+    display: string;
+    orientation: string;
+    background_color: string;
+    theme_color: string;
+    dir: string;
+    lang: string;
+    scope: string;
+    serviceworker: string;
+}
