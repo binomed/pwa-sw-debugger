@@ -50,7 +50,7 @@ export class CacheSectionComponent extends ParentComponent {
     render() {
         return html`
         ${super.render()}
-        <h1 id="caches">Caches</h1>
+        
         <cache-list .cacheKeys="${this.cacheKeys}" ></cache-list>
         <br>
         <cache-table .cacheEntry="${this.cacheEntry}"

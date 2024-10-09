@@ -153,19 +153,19 @@ export class ManifestSectionComponent extends ParentComponent {
     renderManifest() {
         return html`
             ${this.manifestData.path}
-            <h2>General informations</h2>
+            <h3>General informations</h3>
             ${this.renderInfo()}
 
-            <h2>Configuration</h2>
+            <h3>Configuration</h3>
             ${this.renderConfiguration()}
 
-            <h2>Layout</h2>
+            <h3>Layout</h3>
             ${this.renderLayout()}
 
-            <h2>Theme</h2>
+            <h3>Theme</h3>
             ${this.renderTheme()}
             
-            <h2>Icons</h2>
+            <h3>Icons</h3>
             ${this.renderIcons()}
     `;
     }
@@ -173,7 +173,7 @@ export class ManifestSectionComponent extends ParentComponent {
     render() {
         return html`
         ${super.render()}
-        <h1 id="manifest">Manifest</h1>
+        
         ${this.manifestData && this.manifestData.hasManifest ? this.renderManifest() : html`<div>No manifest found</div>`}
         `;
     }

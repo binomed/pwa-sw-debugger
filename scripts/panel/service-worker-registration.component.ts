@@ -25,7 +25,7 @@ export class SWRegistrationComponent extends ParentComponent {
     render() {
         return html`
         ${super.render()}
-        <h1 id="service-worker">Service worker registration</h1>
+        
         ${this.reg ? html`
             Installing : ${this.reg.installing ? 'installing : ' + this.reg.installing?.scriptURL : '--'}<br>
             Waiting : ${this.reg.waiting ? 'waiting : ' + this.reg.waiting?.scriptURL : '--'}<br>

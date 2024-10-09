@@ -23,19 +23,22 @@ export class SWPanel extends ParentComponent {
             top:0;
             left:0;
             display:grid;
-            grid-template-columns: 200px 1fr;
+            grid-template-columns: 250px calc(100% - 250px);
             grid-template-rows: 1fr;
             grid-gap: 20px;
             grid-template-areas: "menu content";
             background-color: white;
+            overflow:hidden;
         }
 
         menu{
+            height:100%;
             grid-area:"menu";
-            background-color: ghostwhite;
+            border-right:thin solid lightgray
         }
 
         main{
+            overflow-y: auto;
             grid-area: "content";
         }
         `
@@ -117,21 +120,23 @@ export class SWPanel extends ParentComponent {
         return html`
         ${super.render()}
         <menu>
-            <h3>PWA ServiceWorker Debugger</h3>
-            <ul>
-                <li><a href="#service-worker">Service worker</a></li>
-                <li><a href="#caches">Caches</a></li>
-                <li><a href="#manifest">Manifest</a></li>
-            </ul>
+            <h4>PWA ServiceWorker Debugger</h4>  
+            <hr>          
+            <a href="#service-worker">Service worker</a><br>
+            <a href="#caches">Caches</a><br>
+            <a href="#manifest">Manifest</a>
         </menu> 
         <main>
+            <h1 id="service-worker">Service worker registration</h1>
             <sw-registration .reg="${this.reg}"></sw-registration>
             <hr>
+            <h1 id="caches">Caches</h1>
             <cache-section 
                 .cacheKeys="${this.cacheKeys}" 
                 .cacheEntry="${this.cacheEntry}"
                 .cacheDetails="${this.cacheDetails}"></cache-section>
             <hr>
+            <h1 id="manifest">Manifest</h1>
             <manifest-section .manifestData="${this.manifestData}"></manifest-section>
             
         </main>

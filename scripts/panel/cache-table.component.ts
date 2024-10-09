@@ -90,7 +90,7 @@ export class CacheTableComponent extends ParentComponent {
 
     render_table() {
         return html`
-            <h2>Cache entries for : "${this.cacheEntry.cacheKey}"</h2>
+            <h3>Cache entries for : "${this.cacheEntry.cacheKey}"</h3>
             <div class="overflow-auto">
                 <table class="styled-table stripped">
                     <thead>
